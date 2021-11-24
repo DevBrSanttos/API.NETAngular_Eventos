@@ -1,0 +1,13 @@
+Iniciar projeto API
+dotnet new webapi -n nomeDoProjeto
+
+Configurar banco de dados sqlLite
+    instalar pelo nuget 
+	microsoft.EntityFrameworkCore.sqlite versão 2.2.0
+    Configurar a conexão no arquivo de configurações do Development
+
+Criando tabela entity framework core
+    inserir o model na classe de conexão ...dataContext
+	criar uma variavel public dbSet<nome da classe model> nomeDaTabela { get; set; }
+    Executar comando dotnet ef migrations add init
+    Atualizar banco com dotnet ef dabase update

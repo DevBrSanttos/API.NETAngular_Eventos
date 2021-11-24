@@ -33,6 +33,7 @@ namespace ProAgil.API
                 );
          
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddCors(); // Adicionar configuração de permissão cruzada
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +50,8 @@ namespace ProAgil.API
             }
 
             //app.UseHttpsRedirection();
+            //Permitir que o Angular faça requisições via HTTP na API
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseMvc();
         }
     }

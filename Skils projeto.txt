@@ -1,13 +1,60 @@
-Iniciar projeto API
-dotnet new webapi -n nomeDoProjeto
+---------- .NETCORE -----------
 
-Configurar banco de dados sqlLite
+Iniciar projeto API
+    dotnet new webapi -n nomeDoProjeto
+
+CONFIGURAR BANCO DE DADOS (neste caso estou usando o SQLite)
     instalar pelo nuget 
 	microsoft.EntityFrameworkCore.sqlite versão 2.2.0
     Configurar a conexão no arquivo de configurações do Development
 
-Criando tabela entity framework core
+CRIANDO TABELA ATRAVÉS DO ENTITY FRAMEWORK CORE
     inserir o model na classe de conexão ...dataContext
 	criar uma variavel public dbSet<nome da classe model> nomeDaTabela { get; set; }
+    
     Executar comando dotnet ef migrations add init
     Atualizar banco com dotnet ef dabase update
+
+
+------- ANGULAR --------------
+
+Craindo Projeto Angular
+    ng new nomeDoProjeto
+
+Executar Projeto
+    ng serve -o (-o para abrir diretamente o navegador)
+
+
+ADICIONAR O BOOTStrap e FONTAWESOME
+    Instalar
+	npm i --save bootstrap @fortawesome/fontawesome-free
+
+    Referenciar os dois arquivos
+	acessar o arquivo styles.cs na raiz do peojeto angular
+	    fazer o import dos arquivos
+		@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+		@import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
+
+
+FAZER REQUISIÇÕES HTTP (API)
+    Antes, permitir a requisição cruzada (error CORS)
+	ir no arquivo Startup na API
+		em ConfigureServices adicionar
+			services.AddCors();
+
+		em Configure adicionar antes do app.UseMvc();
+			npm install --save @fortawesome/fontawesome-free
+		
+    entrar no arquivo app.module.ts
+        dentro de imports
+    	    importar o HttpClienteModule
+
+    fazer injeção de dependencia no construtor do component.ts
+	
+
+
+
+
+
+
+

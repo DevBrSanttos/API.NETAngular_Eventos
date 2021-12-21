@@ -22,6 +22,8 @@ namespace ProAgil.API.Migrations
 
                     b.Property<string>("dataEvento");
 
+                    b.Property<string>("imagemURL");
+
                     b.Property<string>("local");
 
                     b.Property<string>("lote");

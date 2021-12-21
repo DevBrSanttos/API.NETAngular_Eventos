@@ -13,7 +13,7 @@ CRIANDO TABELA ATRAVÉS DO ENTITY FRAMEWORK CORE
 	criar uma variavel public dbSet<nome da classe model> nomeDaTabela { get; set; }
     
     Executar comando dotnet ef migrations add init
-    Atualizar banco com dotnet ef dabase update
+    Atualizar banco com dotnet ef database update
 
 
 ------- ANGULAR --------------

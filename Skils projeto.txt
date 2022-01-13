@@ -1,7 +1,10 @@
 ---------- .NETCORE -----------
 
-Iniciar projeto API
+INICIAR PROJETO API
     dotnet new webapi -n nomeDoProjeto
+
+EXECUTAR PROJETO
+    dotnet watch run
 
 CONFIGURAR BANCO DE DADOS (neste caso estou usando o SQLite)
     instalar pelo nuget 
@@ -15,10 +18,50 @@ CRIANDO TABELA ATRAVÉS DO ENTITY FRAMEWORK CORE
     Executar comando dotnet ef migrations add init
     Atualizar banco com dotnet ef database update
 
+MULTIPLAS CAMADAS
+   Criar uma solução (sln)
+	dotnet new sln -n nomeDaSolução
+	Solução(sln) serve para referenciar projetos ou seja um projeto poderá enxergar outro
+	Exemplo: dotnet new sln -n ProEventos
+
+   Criar uma class library ou projeto standard
+	dotnet new classlib -n nomeDaLibrary
+	no nosso projeto foi criado 3 class library
+		dotnet new classlib -n ProEventos.Persistence
+		dotnet new classlib -n ProEventos.Domain
+		dotnet new classlib -n ProEventos.Application
+
+   Referenciar projetos
+	dotnet sln nomeDaSolução add nomeDaLibrary
+	Exemplo: dotnet sln proEventos.sln add ProEventos.Application
+		 dotnet sln proEventos.sln add ProEventos.Domain
+		 dotnet sln proEventos.sln add ProAgil.API
+		 dotnet sln proEventos.sln add ProEventos.Persistence
+
+	Adicionar referencia de um projeto em outro
+		via linha de comando
+			dotnet add nomeDoProjeto reference nomeDoProjetoReferenciado
+		OU
+		referenciar direto no .csproj do projeto
+			<ItemGroup>
+    				<ProjectReference Include="adicionar caminho do .csproj do projeto a ser enxergado" />
+  			</ItemGroup>
+
+		Exemplo via linha de comando: 
+			dotnet add ProAgil.API reference ProEventos.Application
+		Exemplo via .csproj:
+			<ItemGroup>
+    				<ProjectReference Include="..\ProEventos.Application\ProEventos.Application.csproj" />
+  			</ItemGroup>
+
+   CRIAR MIGRATIONS COM PROJETOS REFERENCIADOS
+	dotnet ef migrations add initial -p nomeDoProjetoQuePossuiOContext -s nomeDoProjetoReferencia (obs: o projeto de referencia não pode ser standard)
+	Exemplo: dotnet ef migrations add initial -p ProEventos.Persistence -s ProAgil.API
+	Atualizar banco de dados: dotnet ef database update -s ProAgil.API
 
 ------- ANGULAR --------------
 
-Craindo Projeto Angular
+Criando Projeto Angular
     ng new nomeDoProjeto
 
 Executar Projeto

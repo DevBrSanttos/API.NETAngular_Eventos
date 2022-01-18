@@ -8,20 +8,20 @@ EXECUTAR PROJETO
 
 CONFIGURAR BANCO DE DADOS (neste caso estou usando o SQLite)
     instalar pelo nuget 
-	microsoft.EntityFrameworkCore.sqlite versão 2.2.0
-    Configurar a conexão no arquivo de configurações do Development
+	microsoft.EntityFrameworkCore.sqlite versï¿½o 2.2.0
+    Configurar a conexï¿½o no arquivo de configuraï¿½ï¿½es do Development
 
-CRIANDO TABELA ATRAVÉS DO ENTITY FRAMEWORK CORE
-    inserir o model na classe de conexão ...dataContext
+CRIANDO TABELA ATRAVï¿½S DO ENTITY FRAMEWORK CORE
+    inserir o model na classe de conexï¿½o ...dataContext
 	criar uma variavel public dbSet<nome da classe model> nomeDaTabela { get; set; }
     
     Executar comando dotnet ef migrations add init
     Atualizar banco com dotnet ef database update
 
 MULTIPLAS CAMADAS
-   Criar uma solução (sln)
-	dotnet new sln -n nomeDaSolução
-	Solução(sln) serve para referenciar projetos ou seja um projeto poderá enxergar outro
+   Criar uma soluï¿½ï¿½o (sln)
+	dotnet new sln -n nomeDaSoluï¿½ï¿½o
+	Soluï¿½ï¿½o(sln) serve para referenciar projetos ou seja um projeto poderï¿½ enxergar outro
 	Exemplo: dotnet new sln -n ProEventos
 
    Criar uma class library ou projeto standard
@@ -32,7 +32,7 @@ MULTIPLAS CAMADAS
 		dotnet new classlib -n ProEventos.Application
 
    Referenciar projetos
-	dotnet sln nomeDaSolução add nomeDaLibrary
+	dotnet sln nomeDaSoluï¿½ï¿½o add nomeDaLibrary
 	Exemplo: dotnet sln proEventos.sln add ProEventos.Application
 		 dotnet sln proEventos.sln add ProEventos.Domain
 		 dotnet sln proEventos.sln add ProAgil.API
@@ -55,9 +55,20 @@ MULTIPLAS CAMADAS
   			</ItemGroup>
 
    CRIAR MIGRATIONS COM PROJETOS REFERENCIADOS
-	dotnet ef migrations add initial -p nomeDoProjetoQuePossuiOContext -s nomeDoProjetoReferencia (obs: o projeto de referencia não pode ser standard)
+	dotnet ef migrations add initial -p nomeDoProjetoQuePossuiOContext -s nomeDoProjetoReferencia (obs: o projeto de referencia nï¿½o pode ser standard)
 	Exemplo: dotnet ef migrations add initial -p ProEventos.Persistence -s ProAgil.API
 	Atualizar banco de dados: dotnet ef database update -s ProAgil.API
+
+
+	IGNORAR LOOPING DE JSON AO FAZER BUSCAS NO BANCO DE DADOS EM TABELAS RELACIONADAS
+		obs: tive que Atualizar a versÃ£o do sdk
+		1Â° - Adicionar reference do Microsoft.AspNetCore.Mvc.NewtonsoftJson via NuGet
+		2Â° - Adicionar este comando no Startup.cs
+				services.AddControllers()
+                    .AddNewtonsoftJson(x =>
+                        x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                        );
+
 
 ------- ANGULAR --------------
 
@@ -79,8 +90,8 @@ ADICIONAR O BOOTStrap e FONTAWESOME
 		@import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 
 
-FAZER REQUISIÇÕES HTTP (API)
-    Antes, permitir a requisição cruzada (error CORS)
+FAZER REQUISIï¿½ï¿½ES HTTP (API)
+    Antes, permitir a requisiï¿½ï¿½o cruzada (error CORS)
 	ir no arquivo Startup na API
 		em ConfigureServices adicionar
 			services.AddCors();
@@ -92,7 +103,7 @@ FAZER REQUISIÇÕES HTTP (API)
         dentro de imports
     	    importar o HttpClienteModule
 
-    fazer injeção de dependencia no construtor do component.ts
+    fazer injeï¿½ï¿½o de dependencia no construtor do component.ts
 	
 
 

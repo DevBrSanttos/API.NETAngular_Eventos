@@ -43,6 +43,7 @@ namespace ProEventos.Application
                     return null;
 
                 model.id = evento.Id;
+
                 _geralPersist.update(model);
 
                 if (await _geralPersist.saveChangesAsync())
@@ -53,7 +54,6 @@ namespace ProEventos.Application
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
         }

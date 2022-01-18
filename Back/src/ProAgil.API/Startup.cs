@@ -30,7 +30,6 @@ namespace ProAgil.API
                 );
 
 
-
             services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<IGeneratePersist, GeneratePersist>();
             services.AddScoped<IEventoPersist, EventoPersist>();

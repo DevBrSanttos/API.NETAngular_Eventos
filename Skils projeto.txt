@@ -69,6 +69,25 @@ MULTIPLAS CAMADAS
                         x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                         );
 
+	ADICIONAR DELETE EM CASCATE QUANDO A TABELA TIVER MAIS DE UMA CHAVE ESTRANGEIRA
+		obs: olhar o codigo no context: ProEventos.Persistence/Contextos/ProEventosContext.cs
+
+	TRABALHANDO COM DTOS, AutoMapper e Data Annotations NO APPLICATION
+		Adicionar AutoMapper pelo NuGet
+			1° Adicionar referencia:
+				AutoMapper.Extensions.Microsoft.DependencyInjection
+				adicionada neste projeto versão 8.1.1
+
+			2° Criar classe profile para fazer as referencias dos Dto e os Domains
+			obs: a minha está dentro da pasta ProAgil.Application/Helpers
+
+			3° Fazer configuração no Program.cs Startup
+				depois do service.AddControllers()
+				adicionar o codigo: services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+
+
 
 ------- ANGULAR --------------
 

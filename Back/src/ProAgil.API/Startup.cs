@@ -9,6 +9,8 @@ using ProEventos.Application.Contratos;
 using ProEventos.Persistence;
 using ProEventos.Persistence.Contextos;
 using ProEventos.Persistence.Contratos;
+using AutoMapper;
+using System;
 
 namespace ProAgil.API
 {
@@ -34,6 +36,9 @@ namespace ProAgil.API
                     .AddNewtonsoftJson(x =>
                         x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                         );
+
+            // Configuração do AutoMapper
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<IGeneratePersist, GeneratePersist>();

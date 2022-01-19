@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProEventos.Application.Dtos;
 using ProEventos.Application.Contratos;
-using ProEventos.Domain;
 
 namespace ProAgil.API.Controllers
 {
@@ -26,7 +26,7 @@ namespace ProAgil.API.Controllers
             {
                 var eventos = await _eventoService.getAllEventosAsync(true);
                 if (eventos == null)
-                    return NotFound("Nenhum evento encontrado.");
+                    return NoContent();
 
                 return Ok(eventos);
             }
@@ -46,7 +46,8 @@ namespace ProAgil.API.Controllers
             {
                 var evento = await _eventoService.getEventoByIdAsync(id, true);
                 if (evento == null)
-                    return NotFound($"Evento de id {id} não encontrado.");
+                    return NoContent();
+
                 return Ok(evento);
             }
             catch (Exception ex)
@@ -64,7 +65,8 @@ namespace ProAgil.API.Controllers
             {
                 var eventos = await _eventoService.getAllEventosByTemaAsync(tema, true);
                 if (eventos == null)
-                    return NotFound($"Eventos com o tema {tema} não encontrados.");
+                    return NoContent();
+
                 return Ok(eventos);
             }
             catch (Exception ex)
@@ -76,13 +78,13 @@ namespace ProAgil.API.Controllers
 
         // POST api/eventos
         [HttpPost]
-        public async Task<IActionResult> Post(Evento model)
+        public async Task<IActionResult> Post(EventoDto model)
         {
             try
             {
                 var evento = await _eventoService.addEvento(model);
                 if (evento == null)
-                    return BadRequest("Erro ao tentar adicionar evento.");
+                    return NoContent();
 
                 return Ok(evento);
 
@@ -97,13 +99,13 @@ namespace ProAgil.API.Controllers
 
         // PUT api/eventos/?
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Evento model)
+        public async Task<IActionResult> Put(int id, EventoDto model)
         {
             try
             {
                 var evento = await _eventoService.updateEvento(id, model);
                 if (evento == null)
-                    return BadRequest("Erro ao tentar atualizar evento.");
+                    return NoContent();
 
                 return Ok(evento);
             }
@@ -121,9 +123,14 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                if (await _eventoService.deleteEvento(id))
-                    return Ok("Deletado com sucesso.");
-                return BadRequest("Evento não deletado.");
+                var evento = await _eventoService.getEventoByIdAsync(id);
+                if (evento == null)
+                    return NoContent();
+
+                return await _eventoService.deleteEvento(id) ?
+                        Ok("Deletado") :
+                        throw new Exception("Ocorreu um problema não específico ao tentar deletar.");
+
             }
             catch (Exception ex)
             {

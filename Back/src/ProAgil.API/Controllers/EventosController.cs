@@ -34,7 +34,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var eventos = await _eventoService.getAllEventosAsync(User.GetUserId(), true);
+                var eventos = await _eventoService.GetAllEventosAsync(User.GetUserId(), true);
                 if (eventos == null)
                     return NoContent();
 
@@ -54,7 +54,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var evento = await _eventoService.getEventoByIdAsync(User.GetUserId(), id, true);
+                var evento = await _eventoService.GetEventoByIdAsync(User.GetUserId(), id, true);
                 if (evento == null)
                     return NoContent();
 
@@ -73,7 +73,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var eventos = await _eventoService.getAllEventosByTemaAsync(User.GetUserId(), tema, true);
+                var eventos = await _eventoService.GetAllEventosByTemaAsync(User.GetUserId(), tema, true);
                 if (eventos == null)
                     return NoContent();
 
@@ -116,7 +116,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var evento = await _eventoService.addEvento(User.GetUserId(), model);
+                var evento = await _eventoService.AddEvento(User.GetUserId(), model);
                 if (evento == null)
                     return NoContent();
 
@@ -137,7 +137,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var evento = await _eventoService.updateEvento(User.GetUserId(), id, model);
+                var evento = await _eventoService.UpdateEvento(User.GetUserId(), id, model);
                 if (evento == null)
                     return NoContent();
 
@@ -157,11 +157,11 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var evento = await _eventoService.getEventoByIdAsync(User.GetUserId(), id);
+                var evento = await _eventoService.GetEventoByIdAsync(User.GetUserId(), id);
                 if (evento == null)
                     return NoContent();
 
-                return await _eventoService.deleteEvento(User.GetUserId(), id)
+                return await _eventoService.DeleteEvento(User.GetUserId(), id)
                         ? Ok("Evento deletado")
                         : throw new Exception("Ocorreu um problema não específico ao tentar deletar.");
 

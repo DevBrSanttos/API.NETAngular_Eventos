@@ -3,13 +3,13 @@ namespace ProEventos.Application.Dtos
 {
     public class LoteDto
     {
-        public int id { get; set; }
-        public string nome { get; set; }
-        public decimal preco { get; set; }
-        public string dataInicio { get; set; }
-        public string dataFim { get; set; }
-        public int quantidade { get; set; }
-        public int eventoId { get; set; }
-        public EventoDto evento { get; set; }
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public decimal Preco { get; set; }
+        public string DataInicio { get; set; }
+        public string DataFim { get; set; }
+        public int Quantidade { get; set; }
+        public int EventoId { get; set; }
+        public EventoDto Evento { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                if (await _accountService.UserExistsAsync(userDto.userName))
+                if (await _accountService.UserExistsAsync(userDto.UserName))
                     return BadRequest("Usuário já cadastrado");
 
                 var user = await _accountService.CreateAccountAsync(userDto);
@@ -68,10 +68,10 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var user = await _accountService.GetUserByUserNameAsync(userLoginDto.userName);
+                var user = await _accountService.GetUserByUserNameAsync(userLoginDto.UserName);
                 if (user == null) return Unauthorized("Usuário ou senha incorreto");
 
-                var result = await _accountService.CheckUserPasswordAsync(user, userLoginDto.password);
+                var result = await _accountService.CheckUserPasswordAsync(user, userLoginDto.Password);
                 if (!result.Succeeded) return Unauthorized();
 
                 return Ok(new

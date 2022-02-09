@@ -17,33 +17,33 @@ namespace ProEventos.Persistence
         }
 
 
-        public async Task<Palestrante[]> getAllPalestrantesAsync(bool includeEventos = false)
+        public async Task<Palestrante[]> GetAllPalestrantesAsync(bool includeEventos = false)
         {
             IQueryable<Palestrante> query = queryDefault(includeEventos);
 
-            query = query.AsNoTracking().OrderBy(p => p.id);
+            query = query.AsNoTracking().OrderBy(p => p.Id);
             return await query.ToArrayAsync();
 
         }
 
-        public async Task<Palestrante[]> getAllPalestrantesByNomeAsync(string nome, bool includeEventos = false)
+        public async Task<Palestrante[]> GetAllPalestrantesByNomeAsync(string nome, bool includeEventos = false)
         {
             IQueryable<Palestrante> query = queryDefault(includeEventos);
 
             query = query.AsNoTracking()
-                         .OrderBy(p => p.id)
-                         .Where(p => p.user.primeiroNome.ToLower().Contains(nome.ToLower()));
+                         .OrderBy(p => p.Id)
+                         .Where(p => p.User.primeiroNome.ToLower().Contains(nome.ToLower()));
 
             return await query.ToArrayAsync();
 
         }
 
-        public async Task<Palestrante> getPalestranteByIdAsync(int palestranteId, bool includeEventos = false)
+        public async Task<Palestrante> GetPalestranteByIdAsync(int palestranteId, bool includeEventos = false)
         {
             IQueryable<Palestrante> query = queryDefault(includeEventos);
 
             query = query.AsNoTracking()
-                         .Where(p => p.id == palestranteId);
+                         .Where(p => p.Id == palestranteId);
             return await query.FirstOrDefaultAsync();
 
         }
@@ -51,12 +51,12 @@ namespace ProEventos.Persistence
         private IQueryable<Palestrante> queryDefault(bool includeEventos = false)
         {
             IQueryable<Palestrante> query = _context.Palestrantes
-                   .Include(p => p.redesSoiais);
+                   .Include(p => p.RedesSoiais);
 
             if (includeEventos)
                 query = query
-                    .Include(p => p.palestrantesEventos)
-                    .ThenInclude(pe => pe.evento);
+                    .Include(p => p.PalestrantesEventos)
+                    .ThenInclude(pe => pe.Evento);
             return query;
         }
     }

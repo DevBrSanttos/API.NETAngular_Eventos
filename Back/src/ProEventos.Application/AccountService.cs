@@ -49,7 +49,7 @@ namespace ProEventos.Application
             try
             {
                 var user = _mapper.Map<User>(userDto);
-                var result = await _userManager.CreateAsync(user, userDto.password);
+                var result = await _userManager.CreateAsync(user, userDto.Password);
                 if (result.Succeeded)
                 {
                     var userToRetorn = _mapper.Map<UserDto>(user);
@@ -92,9 +92,9 @@ namespace ProEventos.Application
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var result = await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
 
-                _userPersist.update<User>(user);
+                _userPersist.Update<User>(user);
 
-                if (await _userPersist.saveChangesAsync())
+                if (await _userPersist.SaveChangesAsync())
                 {
                     var userRetorno = _userPersist.GetUserByUserNameAsync(user.UserName);
                     return _mapper.Map<UserUpdateDto>(userRetorno);

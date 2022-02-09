@@ -24,7 +24,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var lotes = await _loteService.getLotesByEventoIdAsync(eventoId);
+                var lotes = await _loteService.GetLotesByEventoIdAsync(eventoId);
                 if (lotes == null)
                     return NoContent();
 
@@ -44,7 +44,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var lotes = await _loteService.saveLotes(eventoId, models);
+                var lotes = await _loteService.SaveLotes(eventoId, models);
                 if (lotes == null)
                     return NoContent();
 
@@ -64,11 +64,11 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var lote = await _loteService.getLotebyIdsAsync(eventoId, loteId);
+                var lote = await _loteService.GetLotebyIdsAsync(eventoId, loteId);
                 if (lote == null)
                     return NoContent();
 
-                return await _loteService.deleteLote(lote.eventoId, lote.id)
+                return await _loteService.DeleteLote(lote.EventoId, lote.Id)
                         ? Ok("Lote deletado")
                         : throw new Exception("Ocorreu um problema não específico ao tentar deletar.");
 

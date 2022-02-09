@@ -23,23 +23,23 @@ namespace ProEventos.Application
             _mapper = mapper;
         }
 
-        public async Task<LoteDto[]> saveLotes(int eventoId, LoteDto[] models)
+        public async Task<LoteDto[]> SaveLotes(int eventoId, LoteDto[] models)
         {
             try
             {
-                var lotes = await _lotePersist.getLotesByEventoIdAsync(eventoId);
+                var lotes = await _lotePersist.GetLotesByEventoIdAsync(eventoId);
                 if (lotes == null)
                     return null;
 
                 foreach (var model in models)
                 {
-                    if (model.id == 0)
+                    if (model.Id == 0)
                         await addLote(eventoId, model);
                     else
                         await updateLote(eventoId, model, lotes);
                 }
 
-                var retorno = await _lotePersist.getLotesByEventoIdAsync(eventoId);
+                var retorno = await _lotePersist.GetLotesByEventoIdAsync(eventoId);
                 return _mapper.Map<LoteDto[]>(retorno);
 
             }
@@ -48,16 +48,16 @@ namespace ProEventos.Application
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<bool> deleteLote(int eventoId, int loteId)
+        public async Task<bool> DeleteLote(int eventoId, int loteId)
         {
             try
             {
-                var lote = await _lotePersist.getLoteByIdsAsync(eventoId, loteId);
+                var lote = await _lotePersist.GetLoteByIdsAsync(eventoId, loteId);
                 if (lote == null)
                     throw new Exception("Lote não encontrado.");
 
-                _geralPersist.delete<Lote>(lote);
-                return await _geralPersist.saveChangesAsync();
+                _geralPersist.Delete<Lote>(lote);
+                return await _geralPersist.SaveChangesAsync();
 
             }
             catch (Exception ex)
@@ -65,11 +65,11 @@ namespace ProEventos.Application
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<LoteDto[]> getLotesByEventoIdAsync(int eventoId)
+        public async Task<LoteDto[]> GetLotesByEventoIdAsync(int eventoId)
         {
             try
             {
-                var lotes = await _lotePersist.getLotesByEventoIdAsync(eventoId);
+                var lotes = await _lotePersist.GetLotesByEventoIdAsync(eventoId);
                 if (lotes == null)
                     return null;
 
@@ -84,11 +84,11 @@ namespace ProEventos.Application
             }
         }
 
-        public async Task<LoteDto> getLotebyIdsAsync(int eventoId, int loteId)
+        public async Task<LoteDto> GetLotebyIdsAsync(int eventoId, int loteId)
         {
             try
             {
-                var lote = await _lotePersist.getLoteByIdsAsync(eventoId, loteId);
+                var lote = await _lotePersist.GetLoteByIdsAsync(eventoId, loteId);
                 if (lote == null)
                     return null;
 
@@ -109,11 +109,11 @@ namespace ProEventos.Application
             {
                 // Mapeando LoteDto para Lote
                 var lote = _mapper.Map<Lote>(model);
-                lote.eventoId = eventoId;
+                lote.EventoId = eventoId;
 
-                _geralPersist.add<Lote>(lote);
+                _geralPersist.Add<Lote>(lote);
 
-                await _geralPersist.saveChangesAsync();
+                await _geralPersist.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -125,12 +125,12 @@ namespace ProEventos.Application
         {
             try
             {
-                var lote = lotes.FirstOrDefault(lote => lote.id == model.id);
-                model.eventoId = eventoId;
+                var lote = lotes.FirstOrDefault(lote => lote.Id == model.Id);
+                model.EventoId = eventoId;
 
                 _mapper.Map(model, lote);
-                _geralPersist.update<Lote>(lote);
-                await _geralPersist.saveChangesAsync();
+                _geralPersist.Update<Lote>(lote);
+                await _geralPersist.SaveChangesAsync();
             }
             catch (Exception ex)
             {

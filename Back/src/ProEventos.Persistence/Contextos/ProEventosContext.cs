@@ -25,18 +25,18 @@ namespace ProEventos.Persistence.Contextos
 
             // Informar as chaves estrangeiras na tabela de associação
             modelBuilder.Entity<PalestranteEvento>()
-                .HasKey(PE => new { PE.eventoId, PE.palestranteId });
+                .HasKey(PE => new { PE.EventoId, PE.PalestranteId });
 
             // Deletar rede social em modo cascata ao deletar o evento
             modelBuilder.Entity<Evento>()
-                .HasMany(e => e.redesSociais)
-                .WithOne(rs => rs.evento)
+                .HasMany(e => e.RedesSociais)
+                .WithOne(rs => rs.Evento)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Deletar rede social em modo cascata ao deletar o palestrante
             modelBuilder.Entity<Palestrante>()
-                .HasMany(p => p.redesSoiais)
-                .WithOne(rs => rs.palestrante)
+                .HasMany(p => p.RedesSoiais)
+                .WithOne(rs => rs.Palestrante)
                 .OnDelete(DeleteBehavior.Cascade);
 
 

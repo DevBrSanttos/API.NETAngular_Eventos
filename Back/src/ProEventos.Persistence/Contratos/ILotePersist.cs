@@ -5,7 +5,7 @@ namespace ProEventos.Persistence.Contratos
 {
     public interface ILotePersist
     {
-        Task<Lote[]> getLotesByEventoIdAsync(int eventoId);
-        Task<Lote> getLoteByIdsAsync(int eventoId, int loteId);
+        Task<Lote[]> GetLotesByEventoIdAsync(int eventoId);
+        Task<Lote> GetLoteByIdsAsync(int eventoId, int loteId);
     }
 }

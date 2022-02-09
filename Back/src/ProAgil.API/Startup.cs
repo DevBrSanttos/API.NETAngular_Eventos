@@ -9,8 +9,13 @@ using ProEventos.Application.Contratos;
 using ProEventos.Persistence;
 using ProEventos.Persistence.Contextos;
 using ProEventos.Persistence.Contratos;
-using AutoMapper;
 using System;
+using System.Text.Json.Serialization;
+using ProEventos.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ProAgil.API
 {
@@ -33,18 +38,57 @@ namespace ProAgil.API
 
             // Ignorar Looping de Json
             services.AddControllers()
-                    .AddNewtonsoftJson(x =>
-                        x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    // Converter o index do ENUM no próprio nome ao recuperar do banco.
+                    .AddJsonOptions(option =>
+                        option.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+                    // Ignorar Looping de JSON
+                    .AddNewtonsoftJson(option =>
+                        option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                         );
 
             // Configuração do AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IEventoService, EventoService>();
+            services.AddScoped<ILoteService, LoteService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ITokenService, TokenService>();
+
             services.AddScoped<IGeneratePersist, GeneratePersist>();
             services.AddScoped<IEventoPersist, EventoPersist>();
+            services.AddScoped<ILotePersist, LotePersist>();
+            services.AddScoped<IUserPersist, UserPersist>();
 
             services.AddCors(); // Adicionar configuração de permissão cruzada
+
+            // Configuração do IdentityCore
+            services.AddIdentityCore<User>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 4;
+            })
+            .AddRoles<Role>()
+            .AddRoleManager<RoleManager<Role>>()
+            .AddSignInManager<SignInManager<User>>()
+            .AddRoleValidator<RoleValidator<Role>>()
+            .AddEntityFrameworkStores<ProEventosContext>()
+            .AddDefaultTokenProviders();
+
+            // Configuração do authenticador JWT
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                        };
+                    });
 
         }
 
@@ -60,6 +104,7 @@ namespace ProAgil.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             //Permitir que o Angular faça requisições via HTTP na API

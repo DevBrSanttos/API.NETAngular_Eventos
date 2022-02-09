@@ -8,11 +8,12 @@ EXECUTAR PROJETO
 
 CONFIGURAR BANCO DE DADOS (neste caso estou usando o SQLite)
     instalar pelo nuget 
-	microsoft.EntityFrameworkCore.sqlite vers�o 2.2.0
-    Configurar a conex�o no arquivo de configura��es do Development
+	microsoft.EntityFrameworkCore.sqlite vers�o 5.0.2
+    Configurar a string de conex�o no arquivo de configura��es do Development
+	Configurar a conexão no Startup.cs
 
 CRIANDO TABELA ATRAV�S DO ENTITY FRAMEWORK CORE
-    inserir o model na classe de conex�o ...dataContext
+    inserir o model na classe ...Context (localizada em ProEventos.Persistence/Contextos/ProEventosContext)
 	criar uma variavel public dbSet<nome da classe model> nomeDaTabela { get; set; }
     
     Executar comando dotnet ef migrations add init
@@ -81,11 +82,31 @@ MULTIPLAS CAMADAS
 			2° Criar classe profile para fazer as referencias dos Dto e os Domains
 			obs: a minha está dentro da pasta ProAgil.Application/Helpers
 
-			3° Fazer configuração no Program.cs Startup
+			3° Fazer configuração no Startup.cs
 				depois do service.AddControllers()
 				adicionar o codigo: services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-
+	Autenticação e Autorização JWT
+		Instalar .NET Identity no ProEventos.Domain via nuget
+			1° buscar por Microsoft.AspNetCore.Identity.EntityFrameworkCore
+				obs: instalada versão 5.0.2
+			Criado pastas Identity, Enum e seus conteúdos em ProEventos.Domain
+			Alterado dbContext para IdentityDbContext e configurando relacionamento
+				N-N entre User, UserRole e Role
+			Atualizando database para acrescentar as novas tabelas de user, userRole e Role
+				1° Criar migration:
+					Comando: dotnet ef migrations add AdicionandoIdentity -p ProEventos.Persistence -s ProAgil.API
+				2° Atualizar banco de dados:
+					Comando: dotnet ef database update -s ProAgil.API
+		Quando for criar o gerador de Token no TokenService em ProEventos.Application adicionar as bibliotecas via nuget
+			System.IdentityModel.Tokens.Jwt
+			Microsoft.IdentityModel.Tokens
+		Configurar o IdentityCore no startup.cs
+		Adicionar referencia do Autenticador JWT em ProAgil.API via nuget
+			Microsoft.AspNetCore.Authentication.JwtBearer
+			Microsoft.AspNetCore.Identity.EntityFrameworkCore
+			Fazer configuração da autenticação no startup.cs
+			adicionar dentro do metodo config o app.UseAuthentication(); antes do app.UseAuthorization
 
 
 

@@ -4,18 +4,28 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.Application.Dtos;
 using ProEventos.Application.Contratos;
+using ProAgil.API.Extensions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProAgil.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EventosController : ControllerBase
     {
         public readonly IEventoService _eventoService;
+        public readonly IAccountService _accountService;
+        public readonly IWebHostEnvironment _hostEnvironment;
 
-        public EventosController(IEventoService eventoService)
+        public EventosController(IEventoService eventoService,
+                                 IWebHostEnvironment hostEnvironment,
+                                 IAccountService accountService)
         {
+            _hostEnvironment = hostEnvironment;
             _eventoService = eventoService;
+            _accountService = accountService;
         }
 
         // GET api/eventos
@@ -24,7 +34,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var eventos = await _eventoService.getAllEventosAsync(true);
+                var eventos = await _eventoService.getAllEventosAsync(User.GetUserId(), true);
                 if (eventos == null)
                     return NoContent();
 
@@ -44,7 +54,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var evento = await _eventoService.getEventoByIdAsync(id, true);
+                var evento = await _eventoService.getEventoByIdAsync(User.GetUserId(), id, true);
                 if (evento == null)
                     return NoContent();
 
@@ -63,7 +73,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var eventos = await _eventoService.getAllEventosByTemaAsync(tema, true);
+                var eventos = await _eventoService.getAllEventosByTemaAsync(User.GetUserId(), tema, true);
                 if (eventos == null)
                     return NoContent();
 
@@ -76,13 +86,37 @@ namespace ProAgil.API.Controllers
             }
         }
 
+        /*[HttpPost("upload-image/{eventoId}")]
+        public async Task<IActionResult> UploadImage(int eventoId)
+        {
+            try
+            {
+                var evento = await _eventoService.getEventoByIdAsync(User.GetUserId(), eventoId, true);
+                if (evento == null) return NoContent();
+
+                var file = Request.Form.Files[0];
+                if (file.Length > 0)
+                {
+                    DeleteImage(evento.ImagemURL);
+                    evento.ImagemURL = await SaveImage(file);
+                }
+                var eventoReturn = await _eventoService.updateEvento(User.GetUserId(), eventoId, evento);
+                return Ok(eventoReturn);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar adicionar imagem. Erro: {ex.Message}");
+            }
+        }*/
+
         // POST api/eventos
         [HttpPost]
         public async Task<IActionResult> Post(EventoDto model)
         {
             try
             {
-                var evento = await _eventoService.addEvento(model);
+                var evento = await _eventoService.addEvento(User.GetUserId(), model);
                 if (evento == null)
                     return NoContent();
 
@@ -103,7 +137,7 @@ namespace ProAgil.API.Controllers
         {
             try
             {
-                var evento = await _eventoService.updateEvento(id, model);
+                var evento = await _eventoService.updateEvento(User.GetUserId(), id, model);
                 if (evento == null)
                     return NoContent();
 
@@ -117,19 +151,19 @@ namespace ProAgil.API.Controllers
 
         }
 
-        // DELETE api/values/5
+        // DELETE api/values/?
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var evento = await _eventoService.getEventoByIdAsync(id);
+                var evento = await _eventoService.getEventoByIdAsync(User.GetUserId(), id);
                 if (evento == null)
                     return NoContent();
 
-                return await _eventoService.deleteEvento(id) ?
-                        Ok("Deletado") :
-                        throw new Exception("Ocorreu um problema não específico ao tentar deletar.");
+                return await _eventoService.deleteEvento(User.GetUserId(), id)
+                        ? Ok("Evento deletado")
+                        : throw new Exception("Ocorreu um problema não específico ao tentar deletar.");
 
             }
             catch (Exception ex)

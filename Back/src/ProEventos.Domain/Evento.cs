@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ProEventos.Domain.Identity;
 
 namespace ProEventos.Domain
 {
@@ -13,6 +14,8 @@ namespace ProEventos.Domain
         public int qtdPessoas { get; set; }
         public string telefone { get; set; }
         public string email { get; set; }
+        public int userId { get; set; }
+        public User user { get; set; }
         public IEnumerable<Lote> lotes { get; set; }
         public IEnumerable<RedeSocial> redesSociais { get; set; }
         public IEnumerable<PalestranteEvento> palestrantesEventos { get; set; }

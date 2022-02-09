@@ -6,7 +6,7 @@ namespace ProEventos.Persistence
 {
     public class GeneratePersist : IGeneratePersist
     {
-        public readonly ProEventosContext _context;
+        private readonly ProEventosContext _context;
 
         public GeneratePersist(ProEventosContext context)
         {

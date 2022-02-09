@@ -22,17 +22,18 @@ namespace ProEventos.Application
             _mapper = mapper;
         }
 
-        public async Task<EventoDto> addEvento(EventoDto model)
+        public async Task<EventoDto> addEvento(int userId, EventoDto model)
         {
             try
             {
                 // Mapeando EventoDto para Evento
                 var evento = _mapper.Map<Evento>(model);
+                evento.userId = userId;
 
                 _geralPersist.add<Evento>(evento);
                 if (await _geralPersist.saveChangesAsync())
                 {
-                    var retorno = await _eventoPersist.getEventoByIdAsync(evento.id, false);
+                    var retorno = await _eventoPersist.getEventoByIdAsync(userId, evento.id, false);
                     return _mapper.Map<EventoDto>(retorno);
                 }
                 return null;
@@ -44,15 +45,16 @@ namespace ProEventos.Application
             }
         }
 
-        public async Task<EventoDto> updateEvento(int eventoId, EventoDto model)
+        public async Task<EventoDto> updateEvento(int userId, int eventoId, EventoDto model)
         {
             try
             {
-                var evento = await _eventoPersist.getEventoByIdAsync(eventoId, false);
+                var evento = await _eventoPersist.getEventoByIdAsync(userId, eventoId, false);
                 if (evento == null)
                     return null;
 
-                model.id = evento.id;
+                model.Id = evento.id;
+                model.UserId = userId;
 
                 _mapper.Map(model, evento);
 
@@ -60,7 +62,7 @@ namespace ProEventos.Application
 
                 if (await _geralPersist.saveChangesAsync())
                 {
-                    var retorno = await _eventoPersist.getEventoByIdAsync(evento.id, false);
+                    var retorno = await _eventoPersist.getEventoByIdAsync(userId, evento.id, false);
                     return _mapper.Map<EventoDto>(retorno);
                 }
 
@@ -72,11 +74,11 @@ namespace ProEventos.Application
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<bool> deleteEvento(int eventoId)
+        public async Task<bool> deleteEvento(int userId, int eventoId)
         {
             try
             {
-                var evento = await _eventoPersist.getEventoByIdAsync(eventoId, false);
+                var evento = await _eventoPersist.getEventoByIdAsync(userId, eventoId, false);
                 if (evento == null)
                     throw new Exception("Evento não encontrado.");
 
@@ -90,11 +92,11 @@ namespace ProEventos.Application
             }
         }
 
-        public async Task<EventoDto[]> getAllEventosAsync(bool includePalestrantes = false)
+        public async Task<EventoDto[]> getAllEventosAsync(int userId, bool includePalestrantes = false)
         {
             try
             {
-                var eventos = await _eventoPersist.getAllEventosAsync(includePalestrantes);
+                var eventos = await _eventoPersist.getAllEventosAsync(userId, includePalestrantes);
                 if (eventos == null)
                     return null;
 
@@ -109,11 +111,11 @@ namespace ProEventos.Application
             }
         }
 
-        public async Task<EventoDto[]> getAllEventosByTemaAsync(string tema, bool includePalestrantes = false)
+        public async Task<EventoDto[]> getAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false)
         {
             try
             {
-                var eventos = await _eventoPersist.getAllEventosByTemaAsync(tema, includePalestrantes);
+                var eventos = await _eventoPersist.getAllEventosByTemaAsync(userId, tema, includePalestrantes);
                 if (eventos == null)
                     return null;
 
@@ -128,11 +130,11 @@ namespace ProEventos.Application
             }
         }
 
-        public async Task<EventoDto> getEventoByIdAsync(int eventoId, bool includePalestrantes = false)
+        public async Task<EventoDto> getEventoByIdAsync(int userId, int eventoId, bool includePalestrantes = false)
         {
             try
             {
-                var evento = await _eventoPersist.getEventoByIdAsync(eventoId, includePalestrantes);
+                var evento = await _eventoPersist.getEventoByIdAsync(userId, eventoId, includePalestrantes);
                 if (evento == null)
                     return null;
 

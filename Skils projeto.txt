@@ -119,7 +119,7 @@ Executar Projeto
     ng serve -o (-o para abrir diretamente o navegador)
 
 
-ADICIONAR O BOOTStrap e FONTAWESOME
+ADICIONAR O BOOTSTRAP e FONTAWESOME
     Instalar
 	npm i --save bootstrap @fortawesome/fontawesome-free
 
@@ -144,6 +144,13 @@ FAZER REQUISI��ES HTTP (API)
     	    importar o HttpClienteModule
 
     fazer inje��o de dependencia no construtor do component.ts
+
+ADICIONAR O TOASTR NO PROJETO
+ (TOASTR é a caixinha verde ou vermelha de mensagem que aparece quando adiciona/edita/exclui algum recurso ou da error)
+ link: https://www.npmjs.com/package/ngx-toastr
+	instalar no projeto via npm
+		npm install ngx-toastr --save
+
 	
 
 

@@ -9,13 +9,16 @@
     >
   </div>
 </div>
+
 <table class="table table-striped">
   <thead class="bg-dark text-white">
     <tr>
       <th>
         <button class="btn btn-outline-light btn-sm"
           (click)="alterarEstadoImg()">
-            {{exibirImg ? 'Ocultar' : 'Exibir'}}</button>
+            <i class="{{exibirImg ? 'fa fa-eye-slash' : 'fa fa-eye'}}"></i>
+            {{exibirImg ? 'Ocultar' : 'Exibir'}}
+        </button>
       </th>
       <th>#</th>
       <th>Tema</th>
@@ -36,18 +39,24 @@
           [style.margin.px]="margemImg"
         >
       </td>
-      <td>{{evento.eventoId}}</td>
+      <td>{{evento.id}}</td>
       <td>{{evento.tema}}</td>
       <td>{{evento.local}}</td>
-      <td>{{evento.dataEvento}}</td>
+      <td>{{evento.dataEvento | DateFormatPipe}}</td>
       <td>{{evento.qtdPessoas}}</td>
-      <td>{{evento.lote}}</td>
+      <td>{{evento.lote[0].nome}}</td>
       <td>
-        <button class="btn btn-primary btn-sm mr-2">Editar</button>
-        <button class="btn btn-danger btn-sm">Excluir</button>
+        <button class="btn btn-primary btn-sm mr-2" tooltip="Editar">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button class="btn btn-danger btn-sm" tooltip="Excluir" (click)="openModal(template)">
+          <i class="fa fa-trash"></i>
+        </button>
       </td>
     </tr>
   </tbody>
+
+  <!-- Mensagem apresentada quando não existir eventos -->
   <tfoot *ngIf="!eventos.length">
     <tr>
       <td colspan="8" class="text-center">
@@ -56,3 +65,12 @@
     </tr>
   </tfoot>
 </table>
+
+<!-- Janela de confirmação ao clicar no excluir -->
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Tem certeza que deseja deletar este evento?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+  </div>
+</ng-template>

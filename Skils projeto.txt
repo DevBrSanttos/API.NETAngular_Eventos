@@ -150,7 +150,20 @@ ADICIONAR O TOASTR NO PROJETO
  link: https://www.npmjs.com/package/ngx-toastr
 	instalar no projeto via npm
 		npm install ngx-toastr --save
+	adicionar a referencia no angular.json em styles
+		"node_modules/ngx-toastr/toastr.css"
+	importar no app.module
+		import { ToastrModule } from 'ngx-toastr';
 
+ADICIONAR O SPINNER
+ (SPINNER é a animação de carregando)
+	link: https://www.npmjs.com/package/ngx-spinner
+	instalar no projeto via npm
+		npm install ngx-spinner --save
+	adicionar a referencia no angular.json em styles
+		"node_modules/ngx-spinner/animations/ball-scale-multiple.css"
+	importar no app.module
+		
 	
 
 
